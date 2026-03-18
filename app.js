@@ -9,21 +9,17 @@ const COOLDOWN_DAYS = 7;
 const COOLDOWN_MS   = COOLDOWN_DAYS * 24 * 60 * 60 * 1000;
 
 const { createClient } = supabase;
-let sb, currentUser, allContacts = [];
+
+// Initialize Supabase once at top level
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+let currentUser, allContacts = [];
 
 // ── INIT ──
 function initSupabase() {
-  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-    const b = document.getElementById('config-banner');
-    if (b) b.style.display = 'block';
-    return false;
-  }
-  sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   return true;
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
-  if (!initSupabase()) return;
   const { data } = await sb.auth.getSession();
   if (data.session) {
     handleUserAccess(data.session.user);
