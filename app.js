@@ -140,10 +140,19 @@ async function signup() {
   if (error) { showAuthMsg(error.message, 'error'); return; }
 
   if (data.user && !data.session) {
-    // Email confirmation flow
+    // Email confirmation required
+    document.getElementById('signup-form').style.display = 'none';
+    document.querySelectorAll('.auth-tab').forEach(t => t.style.display = 'none');
     showAuthMsg(
-      `✓ Account created! Please confirm your email.<br><br>
-       You have <strong>7 days</strong> from today to use the app.`,
+      `<div style="text-align:center;padding:1rem 0">
+        <div style="font-size:2rem;margin-bottom:0.75rem">📧</div>
+        <div style="font-size:1rem;color:var(--accent);margin-bottom:0.5rem">Check your email!</div>
+        We sent a confirmation link to <strong>${email}</strong>.<br><br>
+        Click the link in the email to activate your account.<br><br>
+        <span style="font-size:0.65rem;opacity:0.7">You have 7 days from today to use the app once confirmed.</span>
+        <br><br>
+        <button class="btn btn-ghost" style="width:100%;margin-top:0.5rem" onclick="location.reload()">← Back to Login</button>
+      </div>`,
       'success'
     );
   } else if (data.session) {
