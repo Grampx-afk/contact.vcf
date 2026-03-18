@@ -13,7 +13,7 @@ let sb, currentUser, allContacts = [];
 
 // ── INIT ──
 function initSupabase() {
-  if (SUPABASE_URL === 'https://avtcnkrwuldohuaoxjhk.supabase.co') {
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
     const b = document.getElementById('config-banner');
     if (b) b.style.display = 'block';
     return false;
