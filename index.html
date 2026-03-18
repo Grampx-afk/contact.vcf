@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ContactVault</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- ── AUTH SCREEN ── -->
+  <div id="auth-screen">
+    <div class="auth-card">
+      <div class="auth-logo">Contact<span>Vault</span></div>
+      <div class="auth-tagline">Your private contact directory</div>
+
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="switchTab('login')">Sign In</button>
+        <button class="auth-tab" onclick="switchTab('signup')">Sign Up</button>
+      </div>
+
+      <div id="login-form">
+        <label>Email</label>
+        <input type="email" id="login-email" placeholder="you@example.com" />
+        <label>Password</label>
+        <input type="password" id="login-password" placeholder="••••••••" onkeydown="if(event.key==='Enter')login()" />
+        <button class="btn btn-primary" onclick="login()">
+          <span id="login-btn-text">Sign In</span>
+        </button>
+      </div>
+
+      <div id="signup-form" style="display:none">
+        <label>Email</label>
+        <input type="email" id="signup-email" placeholder="you@example.com" />
+        <label>Password</label>
+        <input type="password" id="signup-password" placeholder="Min. 6 characters" onkeydown="if(event.key==='Enter')signup()" />
+        <button class="btn btn-primary" onclick="signup()">
+          <span id="signup-btn-text">Create Account</span>
+        </button>
+      </div>
+
+      <div id="auth-message" class="auth-msg"></div>
+    </div>
+  </div>
+
+  <!-- ── APP SCREEN ── -->
+  <div id="app-screen">
+    <div class="topbar">
+      <div class="topbar-logo">Contact<span>Vault</span></div>
+      <div class="topbar-right">
+        <span class="user-email" id="user-email-display"></span>
+        <button class="btn btn-ghost" onclick="logout()">Sign Out</button>
+      </div>
+    </div>
+
+    <div class="main">
+      <div id="config-banner" class="config-banner" style="display:none">
+        ⚠ <strong>Setup required:</strong> Replace <code>YOUR_SUPABASE_URL</code> and
+        <code>YOUR_SUPABASE_ANON_KEY</code> inside <code>app.js</code> with your credentials.
+      </div>
+
+      <div class="section-header">
+        <div class="section-title">My Contacts</div>
+        <div class="counter" id="contact-count">0 contacts</div>
+      </div>
+
+      <!-- Add Form -->
+      <div class="add-form">
+        <div class="form-row">
+          <div>
+            <label>Full Name</label>
+            <input type="text" id="input-name" placeholder="Jane Doe" />
+          </div>
+          <div>
+            <label>Phone Number</label>
+            <input type="tel" id="input-phone" placeholder="2348012345678" onkeydown="if(event.key==='Enter')addContact()" />
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-add" onclick="addContact()">
+            <span id="add-btn-text">Add Contact</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Contacts Table -->
+      <div class="contacts-wrap">
+        <div class="contacts-toolbar">
+          <div class="search-input-wrap">
+            <span class="search-icon">⌕</span>
+            <input type="text" id="search-input" placeholder="Search contacts..." oninput="filterContacts()" />
+          </div>
+          <!-- Export: admin only, shown via JS -->
+          <button id="export-btn" class="btn btn-export" onclick="exportVCF()" style="display:none">↓ Export VCF</button>
+        </div>
+        <div id="contacts-body">
+          <div class="loading-state"><span class="spinner"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>
